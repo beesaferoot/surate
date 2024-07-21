@@ -35,6 +35,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	coinMarketCapAPIUrl := os.Getenv("COIN_MARKET_CAP_API_URL")
+
+	if len(coinMarketCapAPIUrl) == 0 {
+		coinMarketCapAPIUrl = "https://sandbox-api.coinmarketcap.com/v2/tools/price-conversion"
+	}
+
 	http.HandleFunc("/api/myrate", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 
@@ -50,7 +56,7 @@ func main() {
 					_ = json.NewEncoder(w).Encode(ErrorResponse{Error: err.Error()})
 				}
 
-				coinCapRate, err := FetchUSDRate(apiKey)
+				coinCapRate, err := FetchUSDRate(apiKey, coinMarketCapAPIUrl)
 
 				if err != nil {
 					log.Println(err)

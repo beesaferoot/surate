@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 )
 
@@ -14,9 +15,9 @@ type CoinMarketCapRate struct {
 	rate     float64
 }
 
-func FetchUSDRate(apiKey string, url string) (*CoinMarketCapRate, error) {
+func FetchUSDRate(apiKey string, apiUrl string) (*CoinMarketCapRate, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", apiUrl, nil)
 	if err != nil {
 		log.Print(err)
 		return nil, err

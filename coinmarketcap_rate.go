@@ -25,9 +25,10 @@ func FetchUSDRate(apiKey string, apiUrl string) (*CoinMarketCapRate, error) {
 
 	q := url.Values{}
 
+	// amount=1&convert_id=2819&id=2781
 	q.Add("amount", "1")
-	q.Add("symbol", "NGN")
-	q.Add("convert", "USD,NGN")
+	q.Add("id", "2781")
+	q.Add("convert_id", "2819")
 
 	req.Header.Set("Accepts", "application/json")
 	req.Header.Add("X-CMC_PRO_API_KEY", apiKey)
@@ -54,9 +55,9 @@ func FetchUSDRate(apiKey string, apiUrl string) (*CoinMarketCapRate, error) {
 	}
 
 	data := result["data"].(map[string]interface{})
-	currencyRate := data["NGN"].(map[string]interface{})
+	currencyRate := data["2781"].(map[string]interface{})
 	quote := currencyRate["quote"].(map[string]interface{})
-	nGN := quote["NGN"].(map[string]interface{})
+	nGN := quote["2819"].(map[string]interface{})
 	nGPrice := nGN["price"].(float64)
 
 	return &CoinMarketCapRate{

@@ -54,6 +54,7 @@ func main() {
 					log.Println(err)
 					w.WriteHeader(http.StatusInternalServerError)
 					_ = json.NewEncoder(w).Encode(ErrorResponse{Error: err.Error()})
+					return
 				}
 
 				coinCapRate, err := FetchUSDRate(apiKey, coinMarketCapAPIUrl)
@@ -62,6 +63,7 @@ func main() {
 					log.Println(err)
 					w.WriteHeader(http.StatusInternalServerError)
 					_ = json.NewEncoder(w).Encode(ErrorResponse{Error: err.Error()})
+					return
 				}
 
 				resp = RateResponse{

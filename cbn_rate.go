@@ -37,6 +37,20 @@ func ParseCSV(reader io.Reader) (*CBNRate, error) {
 	date := rec[0]
 	currency := rec[1]
 	buying_rate := rec[4]
+	current_date := rec[0]
+
+	for date == current_date {
+		if strings.Contains(currency, "US DOLLAR") {
+			break
+		}
+		rec, err = r.Read()
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse CSV body: %s", err.Error())
+		}
+		current_date = rec[0]
+		currency = rec[1]
+		buying_rate = rec[4]
+	}
 
 	if strings.Contains(currency, "US DOLLAR") {
 		floatVal, err := strconv.ParseFloat(buying_rate, 32)
